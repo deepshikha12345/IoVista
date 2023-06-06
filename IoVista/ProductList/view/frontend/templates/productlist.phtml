@@ -1,0 +1,52 @@
+<?php
+$productCollection = $block->getProducts();
+?>
+
+<?php $count = 1; ?>
+    <div class="ind-container">    
+        <div class="products wrapper grid products-grid grid">
+            <div class="products grid items product-items slick-carousel">
+                <?php foreach($productCollection as $_product): ?>
+                    <div class="item product product-item">
+                        <div class="product-item-info item" data-container="product-grid">
+                            <?php
+$objectManager =\Magento\Framework\App\ObjectManager::getInstance();
+$helperImport = $objectManager->get('\Magento\Catalog\Helper\Image');
+
+$imageUrl = $helperImport->init($_product, 'product_page_image_small')
+                ->setImageFile($_product->getSmallImage()) // image,small_image,thumbnail
+                ->resize(380)
+                ->getUrl();
+?>
+                           <a href="<?php echo $block->escapeUrl($_product->getProductUrl()) ?>" class="product photo product-item-photo" tabindex="-1">
+                    <img class="product-image-photo default_image" src="<?php echo $imageUrl ?>" alt="">
+                </a>
+                            <div class="product details product-item-details">
+                                
+                                <strong class="product name product-item-name">
+     <a class="product-item-link" href="<?php echo $block->escapeUrl($_product->getProductUrl()) ?>"><?php echo $block->escapeHtml($_product->getName()) ?> </a>
+                </strong>
+                               <span class="price-container price-final_price tax weee">
+                        <span id="product-price"  data-price-type="finalPrice" class="price-wrapper "><span class="price"><?php echo $block->escapeHtml($_product->getPrice()) ?></span></span>
+                    </span>
+                           
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+    <?php $count++; ?> 
+<script>
+require(['jquery', 'jquery/ui', 'slick'], function($) {
+    $(document).ready(function() {
+        $(".slick-carousel").slick({
+            dots: true,
+            infinite: false,
+            slidesToShow: 4,
+            slidesToScroll: 1
+        });
+    });
+});
+</script>
